@@ -10,7 +10,8 @@ class Post{
     }
 
     public function getPost() {
-        return $this->poster_id . " napisał: " . $this->content;
+        $responseData = ['processedData' => $this->poster_id . " napisał: " . $this->content];
+        echo json_encode($responseData);
     }
 
     public function addPost($conn) {
