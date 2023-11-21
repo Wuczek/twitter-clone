@@ -1,7 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
+require("settings.php");
 
 session_start();
 
@@ -14,7 +12,7 @@ $password = $postData->password;
 // Tutaj dodaj kod do sprawdzenia danych logowania w bazie danych
 // Przykładowe sprawdzenie (uwzględnij bezpieczeństwo!):
 if ($username === 'example' && $password === 'password') {
-    $_SESSION['user'] = "pozdro";
+    $_SESSION['user'] = $username;
     echo json_encode(['success' => true]);
 } else {
     echo json_encode(['success' => false, 'message' => 'Nieprawidłowe dane logowania']);
