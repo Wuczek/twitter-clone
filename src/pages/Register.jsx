@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+const Register = () => {
   const [inputData, setInputData] = useState("");
   const [responseData, setResponseData] = useState(null);
 
@@ -29,10 +29,10 @@ const Login = () => {
   return (
     <>
       <div className="border p-5 w-full max-w-xs rounded-xl mt-auto mx-auto">
-        <h1 className="text-center text-2xl font-bold mb-8">Log in</h1>
+        <h1 className="text-center text-2xl font-bold mb-8">Create account</h1>
         <form action="" className="flex flex-col gap-6">
           <div className="flex flex-col gap-1">
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">Enter your username</label>
             <input
               type="text"
               name="name"
@@ -42,7 +42,17 @@ const Login = () => {
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="email">Enter your email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              onChange={(e) => setInputData(e.target.value)}
+              className="border border-white h-9 bg-blue-950 rounded-lg focus:bg-blue-900"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="password">Enter your password</label>
             <input
               type="password"
               name="password"
@@ -55,13 +65,13 @@ const Login = () => {
             onClick={sendDataToPHP}
             className="border w-max mx-auto py-2 px-3 rounded-lg hover:bg-blue-900"
           >
-            Log in
+            Login
           </button>
         </form>
         <div className="mt-4">
-          <Link to="/register">
+          <Link to="/login">
             <p className="text-center text-gray-400 hover:underline">
-              Don't have an account? Register now!
+              Already have an account? Login now!
             </p>
           </Link>
         </div>
@@ -70,4 +80,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
