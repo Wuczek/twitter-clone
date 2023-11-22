@@ -25,11 +25,38 @@ const Register = () => {
       } catch {
         console.log("Something went wrong");
       }
-      
-      // Your code for submitting the form, e.g., making a fetch request to the server
+      //test
+      try {
+        const response = await fetch("http://localhost:8000/register.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: JSON.stringify({ username, hashedPassword }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.exists) {
+          usernameErr.current.innerHTML = "Username already exists";
+          document.getElementById("username").style.border = "1px solid red";
+          setFormSuccess({ ...formSuccess, username: false });
+        } else {
+          usernameErr.current.innerHTML = "";
+          document.getElementById("username").style.border = "1px solid white";
+          setFormSuccess({ ...formSuccess, username: true });
+        }
+      } catch (error) {
+        console.error("Error checking username:", error);
+      }
+      //a
     }
   };
-
+  
   const handleUsernameChange = async (e) => {
     const newUsername = e.target.value;
     setUsername(newUsername);

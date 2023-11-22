@@ -1,15 +1,25 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type");
 
-// Odbierz dane
-$data = json_decode(file_get_contents('php://input'), true);
+    require "settings.php";
 
-// Przetwórz dane (zmień na wielkie litery)
-$inputValue = strtoupper($data['input']);
+    $conn = new mysqli(DBSERVER, DBLOGIN, DBPASSWORD, DBNAME);
 
-// Odpowiedz
-$responseData = ['processedData' => $inputValue];
-echo json_encode($responseData);
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+    // Odbierz dane
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    $username = $data->username;
+    $password = $data->hashedPassword;
+
+    $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
+    $stmt->bind_param("ss", $username, $password);
+    $stmt->execute();
+    $stmt->close();
+
 ?>

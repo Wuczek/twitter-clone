@@ -1,4 +1,5 @@
 <?php
+require "settings.php";
 // Your database connection code here
 
 // Get the nickname from the request
