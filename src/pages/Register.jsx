@@ -23,19 +23,20 @@ const Register = () => {
       formSuccess.confirmedPassword
     ) {
       try {
-        bcrypt.hash(password, 10, async (err, hashedPassword) => {
-          const response = await fetch("http://localhost:8000/register.php", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: JSON.stringify({ username, hashedPassword }),
-          });
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        const response = await fetch("http://localhost:8000/register.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: username,
+            password: hashedPassword,
+          }),
         });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
       } catch {
         console.log("Something went wrong");
       }
@@ -43,6 +44,10 @@ const Register = () => {
   };
 
   const handleUsernameChange = async (e) => {
+    const usernameValidator = (username) => {
+      const regex = /^[a-zA-Z0-9]+$/;
+      return regex.test(username);
+    };
     const newUsername = e.target.value;
     setUsername(newUsername);
 
