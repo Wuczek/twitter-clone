@@ -1,20 +1,21 @@
 <?php
-require("settings.php");
+    require("settings.php");
 
-session_start();
+    session_start();
 
-// Pobierz dane przesłane z React
-$postData = json_decode(file_get_contents("php://input"));
+    $username = $_POST['username'];
+    $hashedPassword = $_POST['hashedPassword'];
 
-$username = $postData->username;
-$password = $postData->password;
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $nickname);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-// Tutaj dodaj kod do sprawdzenia danych logowania w bazie danych
-// Przykładowe sprawdzenie (uwzględnij bezpieczeństwo!):
-if ($username === 'example' && $password === 'password') {
-    $_SESSION['user'] = $username;
-    echo json_encode(['success' => true]);
-} else {
-    echo json_encode(['success' => false, 'message' => 'Nieprawidłowe dane logowania']);
-}
+
+    if ($username === $result["username"] && $hashedPassword === $result["password"]) {
+        $_SESSION['user'] = $username;
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Nieprawidłowe dane logowania']);
+    }
 ?>

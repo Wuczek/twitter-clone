@@ -26,39 +26,27 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      const response = await fetch("http://localhost:8000/login.php", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `username=${username}&hashedPassword=${hashedPassword}`,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+    } catch {
+      console.log("Something went wrong");
+    }
+  
   };
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await fetch('http://localhost:8000/login.php', {
-  //       method: 'POST',
-  //       credentials: 'include',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ username, password }),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! Status: ${response.status}`);
-  //     }
-
-  //     const data = await response.json();
-
-  //     console.log(data.success);
-
-  //     if (data.success) {
-  //       // Tutaj możesz obsłużyć sukces logowania w React, np. ustawiając stan komponentu
-  //       console.log('Zalogowano pomyślnie');
-  //     } else {
-  //       // Obsłuż błędy logowania, np. wyświetl komunikat dla użytkownika
-  //       console.error(data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error('Wystąpił błąd podczas logowania', error);
-  //   }
-  // };
 
   return (
     <>
@@ -86,6 +74,8 @@ const Login = () => {
               type="password"
               name="password"
               id="password"
+              onChange={handle}
+              value={password}
               className=" h-9 border-white border bg-blue-950 rounded-lg focus:bg-blue-900"
             />
           </div>

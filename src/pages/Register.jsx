@@ -27,11 +27,11 @@ const Register = () => {
         const hashedPassword = await bcrypt.hash(password, salt);
         const response = await fetch("http://localhost:8000/register.php", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username: username,
-            password: hashedPassword,
-          }),
+          credentials: 'include',
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `username=${username}&hashedPassword=${hashedPassword}`,
         });
 
         if (!response.ok) {
