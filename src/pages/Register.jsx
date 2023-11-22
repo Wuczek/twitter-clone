@@ -17,46 +17,31 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formSuccess.username && formSuccess.password && formSuccess.confirmedPassword) {
+    if (
+      formSuccess.username &&
+      formSuccess.password &&
+      formSuccess.confirmedPassword
+    ) {
       try {
         bcrypt.hash(password, 10, async (err, hashedPassword) => {
-          console.log(hashedPassword);
+          const response = await fetch("http://localhost:8000/register.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: JSON.stringify({ username, hashedPassword }),
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
         });
       } catch {
         console.log("Something went wrong");
       }
-      //test
-      try {
-        const response = await fetch("http://localhost:8000/register.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: JSON.stringify({ username, hashedPassword }),
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (data.exists) {
-          usernameErr.current.innerHTML = "Username already exists";
-          document.getElementById("username").style.border = "1px solid red";
-          setFormSuccess({ ...formSuccess, username: false });
-        } else {
-          usernameErr.current.innerHTML = "";
-          document.getElementById("username").style.border = "1px solid white";
-          setFormSuccess({ ...formSuccess, username: true });
-        }
-      } catch (error) {
-        console.error("Error checking username:", error);
-      }
-      //a
     }
   };
-  
+
   const handleUsernameChange = async (e) => {
     const newUsername = e.target.value;
     setUsername(newUsername);
@@ -65,34 +50,14 @@ const Register = () => {
       usernameErr.current.innerHTML = "";
       document.getElementById("username").style.border = "1px solid white";
       setFormSuccess({ ...formSuccess, username: false });
+    } else if (!usernameValidator(newUsername)) {
+      usernameErr.current.innerHTML = "Invalid Username";
+      document.getElementById("username").style.border = "1px solid red";
+      setFormSuccess({ ...formSuccess, username: false });
     } else {
-      try {
-        const response = await fetch("http://localhost:8000/checkUsername.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: `nickname=${encodeURIComponent(newUsername)}`,
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (data.exists) {
-          usernameErr.current.innerHTML = "Username already exists";
-          document.getElementById("username").style.border = "1px solid red";
-          setFormSuccess({ ...formSuccess, username: false });
-        } else {
-          usernameErr.current.innerHTML = "";
-          document.getElementById("username").style.border = "1px solid white";
-          setFormSuccess({ ...formSuccess, username: true });
-        }
-      } catch (error) {
-        console.error("Error checking username:", error);
-      }
+      usernameErr.current.innerHTML = "";
+      document.getElementById("username").style.border = "1px solid white";
+      setFormSuccess({ ...formSuccess, username: true });
     }
   };
 
