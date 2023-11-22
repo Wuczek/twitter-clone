@@ -5,24 +5,13 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const usernameValidator = (username) => {
-    const regex = /^[a-zA-Z0-9]{4,}$/;
-    return regex.test(username);
-  };
-
-  const passwordValidator = (password) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
-    return regex.test(password);
-  };
-
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
-    if(!usernameValidator(e.target.value)) {
-      console.log("Username is not valid");
-    }else {
-      console.log("Username is valid");
-    }
-  }
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +20,7 @@ const Login = () => {
       const hashedPassword = await bcrypt.hash(password, salt);
       const response = await fetch("http://localhost:8000/login.php", {
         method: "POST",
-        credentials: 'include',
+        credentials: "include",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
@@ -44,9 +33,7 @@ const Login = () => {
     } catch {
       console.log("Something went wrong");
     }
-  
   };
-
 
   return (
     <>
@@ -74,7 +61,7 @@ const Login = () => {
               type="password"
               name="password"
               id="password"
-              onChange={handle}
+              onChange={handlePasswordChange}
               value={password}
               className=" h-9 border-white border bg-blue-950 rounded-lg focus:bg-blue-900"
             />
