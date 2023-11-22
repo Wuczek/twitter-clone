@@ -2,8 +2,6 @@ import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import bcrypt from "bcryptjs";
 
-
-
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -22,65 +20,52 @@ const Register = () => {
     if (formSuccess.username && formSuccess.password && formSuccess.confirmedPassword) {
       try {
         bcrypt.hash(password, 10, async (err, hashedPassword) => {
-          console.log(hashedPassword)
+          console.log(hashedPassword);
         });
       } catch {
         console.log("Something went wrong");
       }
-
-      // try {
-      //   const response = await fetch("http://localhost:8000/register.php", {
-      //     method: "POST",
-      //     credentials: "include",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({ username, hashedPassword }),
-      //   });
-
-      //   if (!response.ok) {
-      //     throw new Error(`HTTP error! Status: ${response.status}`);
-      //   }
-
-      //   const data = await response.json();
-
-      //   console.log(data.success);
-
-      //   if (data.success) {
-      //     // Tutaj możesz obsłużyć sukces logowania w React, np. ustawiając stan komponentu
-      //     console.log("Zarejestrowano pomyślnie");
-      //   } else {
-      //     // Obsłuż błędy logowania, np. wyświetl komunikat dla użytkownika
-      //     console.error(data.message);
-      //   }
-      // } catch (error) {
-      //   console.error("Wystąpił błąd podczas rejestracji", error);
-      // }
       
+      // Your code for submitting the form, e.g., making a fetch request to the server
     }
   };
 
-  const handleUsernameChange = (e) => {
-    const usernameValidator = (username) => {
-      const regex = /^[a-zA-Z0-9]{4,}$/;
-      return regex.test(username);
-    };
+  const handleUsernameChange = async (e) => {
+    const newUsername = e.target.value;
+    setUsername(newUsername);
 
-    setUsername(e.target.value);
-    if (e.target.value === null || e.target.value === "") {
+    if (newUsername === null || newUsername === "") {
       usernameErr.current.innerHTML = "";
       document.getElementById("username").style.border = "1px solid white";
-      setFormSuccess({ ...formSuccess, username: false });
-    } else if (!usernameValidator(e.target.value)) {
-      usernameErr.current.innerHTML = "Invalid Username";
-      document.getElementById("username").style.border = "1px solid red";
       setFormSuccess({ ...formSuccess, username: false });
     } else {
-      // Sprawdza czy uzytkownik o danej nazwie istnieje w bazie danych
+      try {
+        const response = await fetch("http://localhost:8000/checkUsername.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `nickname=${encodeURIComponent(newUsername)}`,
+        });
 
-      usernameErr.current.innerHTML = "";
-      document.getElementById("username").style.border = "1px solid white";
-      setFormSuccess({ ...formSuccess, username: true });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.exists) {
+          usernameErr.current.innerHTML = "Username already exists";
+          document.getElementById("username").style.border = "1px solid red";
+          setFormSuccess({ ...formSuccess, username: false });
+        } else {
+          usernameErr.current.innerHTML = "";
+          document.getElementById("username").style.border = "1px solid white";
+          setFormSuccess({ ...formSuccess, username: true });
+        }
+      } catch (error) {
+        console.error("Error checking username:", error);
+      }
     }
   };
 
