@@ -1,71 +1,184 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import bcrypt from "bcryptjs";
+
+
 
 const Register = () => {
-  const [inputData, setInputData] = useState("");
-  const [responseData, setResponseData] = useState(null);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmedPassword, setConfirmedPassword] = useState("");
+  const [formSuccess, setFormSuccess] = useState({
+    username: false,
+    password: false,
+    confirmedPassword: false,
+  });
+  const usernameErr = useRef();
+  const passwordErr = useRef();
+  const confirmedPasswordErr = useRef();
 
-  const sendDataToPHP = () => {
-    const phpURL = "http://localhost:8000/login.php";
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (formSuccess.username && formSuccess.password && formSuccess.confirmedPassword) {
+      try {
+        bcrypt.hash(password, 10, async (err, hashedPassword) => {
+          console.log(hashedPassword)
+        });
+      } catch {
+        console.log("Something went wrong");
+      }
 
-    const dataToSend = { input: inputData };
+      // try {
+      //   const response = await fetch("http://localhost:8000/register.php", {
+      //     method: "POST",
+      //     credentials: "include",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({ username, hashedPassword }),
+      //   });
 
-    fetch(phpURL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataToSend),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setResponseData(data.processedData);
-      })
-      .catch((error) => {
-        console.error("Błąd:", error);
-      });
+      //   if (!response.ok) {
+      //     throw new Error(`HTTP error! Status: ${response.status}`);
+      //   }
+
+      //   const data = await response.json();
+
+      //   console.log(data.success);
+
+      //   if (data.success) {
+      //     // Tutaj możesz obsłużyć sukces logowania w React, np. ustawiając stan komponentu
+      //     console.log("Zarejestrowano pomyślnie");
+      //   } else {
+      //     // Obsłuż błędy logowania, np. wyświetl komunikat dla użytkownika
+      //     console.error(data.message);
+      //   }
+      // } catch (error) {
+      //   console.error("Wystąpił błąd podczas rejestracji", error);
+      // }
+      
+    }
+  };
+
+  const handleUsernameChange = (e) => {
+    const usernameValidator = (username) => {
+      const regex = /^[a-zA-Z0-9]{4,}$/;
+      return regex.test(username);
+    };
+
+    setUsername(e.target.value);
+    if (e.target.value === null || e.target.value === "") {
+      usernameErr.current.innerHTML = "";
+      document.getElementById("username").style.border = "1px solid white";
+      setFormSuccess({ ...formSuccess, username: false });
+    } else if (!usernameValidator(e.target.value)) {
+      usernameErr.current.innerHTML = "Invalid Username";
+      document.getElementById("username").style.border = "1px solid red";
+      setFormSuccess({ ...formSuccess, username: false });
+    } else {
+      // Sprawdza czy uzytkownik o danej nazwie istnieje w bazie danych
+
+      usernameErr.current.innerHTML = "";
+      document.getElementById("username").style.border = "1px solid white";
+      setFormSuccess({ ...formSuccess, username: true });
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    const passwordValidator = (password) => {
+      const regex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+      return regex.test(password);
+    };
+
+    setPassword(e.target.value);
+    if (e.target.value === null || e.target.value === "") {
+      passwordErr.current.innerHTML = "";
+      document.getElementById("password").style.border = "1px solid white";
+      setFormSuccess({ ...formSuccess, password: false });
+    } else if (!passwordValidator(e.target.value)) {
+      passwordErr.current.innerHTML = "Invalid password";
+      document.getElementById("password").style.border = "1px solid red";
+      setFormSuccess({ ...formSuccess, password: false });
+    } else {
+      passwordErr.current.innerHTML = "";
+      document.getElementById("password").style.border = "1px solid white";
+      setFormSuccess({ ...formSuccess, password: true });
+    }
+  };
+
+  const handleConfirmedPasswordChange = (e) => {
+    setConfirmedPassword(e.target.value);
+    if (e.target.value === null || e.target.value === "") {
+      confirmedPasswordErr.current.innerHTML = "";
+      document.getElementById("confirmedPassword").style.border =
+        "1px solid white";
+      setFormSuccess({ ...formSuccess, confirmedPassword: false });
+    } else if (e.target.value !== password) {
+      confirmedPasswordErr.current.innerHTML = "Passwords do not match";
+      document.getElementById("confirmedPassword").style.border =
+        "1px solid red";
+      setFormSuccess({ ...formSuccess, confirmedPassword: false });
+    } else {
+      confirmedPasswordErr.current.innerHTML = "";
+      document.getElementById("confirmedPassword").style.border =
+        "1px solid white";
+      setFormSuccess({ ...formSuccess, confirmedPassword: true });
+    }
   };
 
   return (
     <>
       <div className="border p-5 w-full max-w-xs rounded-xl mt-auto mx-auto">
         <h1 className="text-center text-2xl font-bold mb-8">Create account</h1>
-        <form action="" className="flex flex-col gap-6">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="name">Enter your username</label>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+          <div className="flex flex-col gap-1 relative">
             <input
               type="text"
-              name="name"
-              id="name"
-              onChange={(e) => setInputData(e.target.value)}
-              className="border border-white h-9 bg-blue-950 rounded-lg focus:bg-blue-900"
+              name="username"
+              id="username"
+              onChange={handleUsernameChange}
+              value={username}
+              className="border border-white h-9 bg-blue-950 rounded-lg focus:bg-blue-900 outline-none pl-3"
+              placeholder="Username"
+              required
             />
+            <p className="text-red-400 absolute top-9" ref={usernameErr}></p>
           </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="email">Enter your email</label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              onChange={(e) => setInputData(e.target.value)}
-              className="border border-white h-9 bg-blue-950 rounded-lg focus:bg-blue-900"
-            />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password">Enter your password</label>
+          <div className="flex flex-col gap-1 relative">
             <input
               type="password"
               name="password"
               id="password"
-              className=" h-9 border-white border bg-blue-950 rounded-lg focus:bg-blue-900"
+              onChange={handlePasswordChange}
+              value={password}
+              className=" h-9 border-white border bg-blue-950 rounded-lg focus:bg-blue-900 outline-none pl-3"
+              placeholder="Password"
+              required
             />
+            <p className="text-red-400 absolute top-9" ref={passwordErr}></p>
+          </div>
+          <div className="flex flex-col gap-1 relative">
+            <input
+              type="password"
+              name="confirmedPassword"
+              id="confirmedPassword"
+              onChange={handleConfirmedPasswordChange}
+              value={confirmedPassword}
+              className=" h-9 border-white border bg-blue-950 rounded-lg focus:bg-blue-900 outline-none pl-3"
+              placeholder="Confirm password"
+              required
+            />
+            <p
+              className="text-red-400 absolute top-9"
+              ref={confirmedPasswordErr}
+            ></p>
           </div>
           <button
             type="submit"
-            onClick={sendDataToPHP}
             className="border w-max mx-auto py-2 px-3 rounded-lg hover:bg-blue-900"
           >
-            Login
+            Register
           </button>
         </form>
         <div className="mt-4">

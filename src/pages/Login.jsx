@@ -2,54 +2,81 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch('http://localhost:8000/login.php', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      console.log(data.success);
-
-      if (data.success) {
-        // Tutaj możesz obsłużyć sukces logowania w React, np. ustawiając stan komponentu
-        console.log('Zalogowano pomyślnie');
-      } else {
-        // Obsłuż błędy logowania, np. wyświetl komunikat dla użytkownika
-        console.error(data.message);
-      }
-    } catch (error) {
-      console.error('Wystąpił błąd podczas logowania', error);
-    }
+  const usernameValidator = (username) => {
+    const regex = /^[a-zA-Z0-9]{4,}$/;
+    return regex.test(username);
   };
+
+  const passwordValidator = (password) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+    return regex.test(password);
+  };
+
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+    if(!usernameValidator(e.target.value)) {
+      console.log("Username is not valid");
+    }else {
+      console.log("Username is valid");
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  };
+
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await fetch('http://localhost:8000/login.php', {
+  //       method: 'POST',
+  //       credentials: 'include',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ username, password }),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! Status: ${response.status}`);
+  //     }
+
+  //     const data = await response.json();
+
+  //     console.log(data.success);
+
+  //     if (data.success) {
+  //       // Tutaj możesz obsłużyć sukces logowania w React, np. ustawiając stan komponentu
+  //       console.log('Zalogowano pomyślnie');
+  //     } else {
+  //       // Obsłuż błędy logowania, np. wyświetl komunikat dla użytkownika
+  //       console.error(data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('Wystąpił błąd podczas logowania', error);
+  //   }
+  // };
 
   return (
     <>
       <div className="border p-5 w-full max-w-xs rounded-xl mt-auto mx-auto">
         <h1 className="text-center text-2xl font-bold mb-8">Log in</h1>
-        <form action="" method="POST" className="flex flex-col gap-6">
+        <form
+          method="POST"
+          className="flex flex-col gap-6"
+          onSubmit={handleSubmit}
+        >
           <div className="flex flex-col gap-1">
-            <label htmlFor="name">Name</label>
+            <label htmlFor="username">Username</label>
             <input
               type="text"
+              name="username"
+              id="username"
+              onChange={handleUsernameChange}
               value={username}
-              name="name"
-              id="name"
-              onChange={(e) => setUsername(e.target.value)}
               className="border border-white h-9 bg-blue-950 rounded-lg focus:bg-blue-900"
             />
           </div>
@@ -57,16 +84,13 @@ const Login = () => {
             <label htmlFor="password">Password</label>
             <input
               type="password"
-              value={password}
               name="password"
               id="password"
-              onChange={(e) => setPassword(e.target.value)}
               className=" h-9 border-white border bg-blue-950 rounded-lg focus:bg-blue-900"
             />
           </div>
           <button
             type="submit"
-            onClick={handleLogin}
             className="border w-max mx-auto py-2 px-3 rounded-lg hover:bg-blue-900"
           >
             Log in
