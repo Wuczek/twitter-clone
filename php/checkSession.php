@@ -1,5 +1,5 @@
 <?php
-    include 'settings.php';
+    require 'settings.php';
 
     session_start();
     if(isset($_SESSION['user'])) {
