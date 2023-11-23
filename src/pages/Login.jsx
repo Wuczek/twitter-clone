@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import bcrypt from "bcryptjs";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -16,19 +17,19 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
       const response = await fetch("http://localhost:8000/login.php", {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: `username=${username}&hashedPassword=${hashedPassword}`,
+        body: `username=${username}&password=${password}`,
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
+      } else {
+        console.log(response);
       }
     } catch {
       console.log("Something went wrong");

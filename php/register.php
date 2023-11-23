@@ -8,7 +8,9 @@
         }
 
     $username = $_POST['username'];  // Change this line
-    $hashedPassword = $_POST['hashedPassword'];  // Change this line
+    $password = $_POST['password'];  // Change this line
+    
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
     $stmt->bind_param("ss", $username, $hashedPassword);

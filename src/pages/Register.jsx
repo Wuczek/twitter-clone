@@ -23,15 +23,13 @@ const Register = () => {
       formSuccess.confirmedPassword
     ) {
       try {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
         const response = await fetch("http://localhost:8000/register.php", {
           method: "POST",
           credentials: 'include',
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: `username=${username}&hashedPassword=${hashedPassword}`,
+          body: `username=${username}&password=${password}`,
         });
 
         if (!response.ok) {
