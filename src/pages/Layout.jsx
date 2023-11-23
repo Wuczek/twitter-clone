@@ -28,7 +28,7 @@ const Layout = () => {
 
   return (
     <>
-      <Navbar isLogged={isLogged}/>
+      <Navbar isLogged={isLogged} setIsLogged={setIsLogged}/>
       <Outlet isLogged={isLogged}/>
       <Footer />
     </>

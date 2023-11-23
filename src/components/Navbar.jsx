@@ -3,7 +3,7 @@ import { BsTwitter } from "react-icons/bs";
 import { BsFillPersonFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 
-const Navbar = ({ isLogged }) => {
+const Navbar = ({ isLogged, setIsLogged }) => {
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
@@ -15,6 +15,7 @@ const Navbar = ({ isLogged }) => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       } else {
+        setIsLogged(false);
         navigate("/");
       }
     } catch {
