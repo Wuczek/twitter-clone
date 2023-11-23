@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Link, redirect } from "react-router-dom";
-import bcrypt from "bcryptjs";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -26,10 +26,12 @@ const Login = () => {
         body: `username=${username}&password=${password}`,
       });
 
-      if (!response.ok) {
+      const data = await response.json
+
+      if (!data.success) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       } else {
-        return redirect("/");
+        navigate("/");
       }
     } catch {
       console.log("Something went wrong");
