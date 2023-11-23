@@ -20,6 +20,7 @@ export default function App() {
         });
 
         const data = await response.json();
+
         if (!data.success) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         } else {
@@ -35,9 +36,12 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout isLogged={isLogged} setIsLogged={setIsLogged}/>}>
-          <Route index element={<Home isLogged={isLogged}/>} />
-          <Route path="login" element={<Login />} />
+        <Route
+          path="/"
+          element={<Layout isLogged={isLogged} setIsLogged={setIsLogged} />}
+        >
+          <Route index element={<Home isLogged={isLogged} />} />
+          <Route path="login" element={<Login setIsLogged={setIsLogged}/>} />
           <Route path="register" element={<Register />} />
           <Route path="*" element={<NoPage />} />
         </Route>

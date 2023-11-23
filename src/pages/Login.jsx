@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({setIsLogged}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -31,6 +31,7 @@ const Login = () => {
       if (!data.success) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       } else {
+        setIsLogged(true);
         navigate("/");
       }
     } catch {
