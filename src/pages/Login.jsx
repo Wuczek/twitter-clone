@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import bcrypt from "bcryptjs";
 
 const Login = () => {
@@ -29,7 +29,7 @@ const Login = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       } else {
-        console.log(response);
+        return redirect("/");
       }
     } catch {
       console.log("Something went wrong");
