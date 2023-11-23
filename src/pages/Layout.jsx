@@ -14,7 +14,8 @@ const Layout = () => {
           credentials: "include",
         });
 
-        if (!response.ok) {
+        const data = await response.json();
+        if (!data.success) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         } else {
           setIsLogged(true);

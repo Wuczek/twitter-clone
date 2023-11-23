@@ -26,7 +26,7 @@ const Login = () => {
         body: `username=${username}&password=${password}`,
       });
 
-      const data = await response.json;
+      const data = await response.json();
 
       if (!data.success) {
         throw new Error(`HTTP error! Status: ${response.status}`);
