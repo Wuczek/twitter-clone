@@ -8,7 +8,7 @@ const Home = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://localhost:8000/user.php", {
+        const response = await fetch("http://localhost:8000/checkSession.php", {
           method: "GET",
           credentials: "include",
         });
