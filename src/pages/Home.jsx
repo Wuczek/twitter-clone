@@ -15,6 +15,7 @@ const Home = ({ user }) => {
         });
 
         const data = await response.json();
+        console.log(data);
         setPosts(data);
         setIsLoadingPosts(false);
       } catch {

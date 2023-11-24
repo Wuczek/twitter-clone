@@ -14,8 +14,15 @@
 
     $row = $result->fetch_assoc();
 
+    if ($result->num_rows >= 0) {
+        $posts = array();
+        do {
+            $posts[] = $row;
+        } while ($row = $result->fetch_assoc());
+    }
+
     $stmt->close();
 
-    echo json_encode($row);
+    echo json_encode($posts);
 
 ?>
