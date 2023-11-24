@@ -18,7 +18,7 @@
 
     $post = $_POST['post'];
 
-    $stmt = $conn->prepare("INSERT INTO posts (content, owner_id) VALUES (?, ?)");
+    $stmt = $conn->prepare("INSERT INTO posts (content, user_id) VALUES (?, ?)");
     $stmt->bind_param("si", $post, $id);
     $stmt->execute();
     $stmt->close();

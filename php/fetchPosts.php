@@ -8,7 +8,7 @@
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    $stmt = $conn->prepare("SELECT posts.id, posts.content, users.username FROM posts INNER JOIN users ON posts.owner_id=users.ID;");
+    $stmt = $conn->prepare("SELECT posts.id, posts.content, users.username FROM posts INNER JOIN users ON posts.user_id=users.id;");
     $stmt->execute();
     $result = $stmt->get_result();
 
