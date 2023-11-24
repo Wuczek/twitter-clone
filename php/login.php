@@ -27,6 +27,6 @@
         $_SESSION['user'] = "$username";
         echo json_encode(['success' => true]);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Nieprawidłowe dane logowania']);
+        echo json_encode(['success' => false]);
     }
 ?>
