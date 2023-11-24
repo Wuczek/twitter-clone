@@ -1,10 +1,15 @@
 import React from "react";
 import { BsTwitter } from "react-icons/bs";
 import { BsFillPersonFill } from "react-icons/bs";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
-const Navbar = ({ isLogged, setIsLogged }) => {
+const Navbar = ({ user, setUser }) => {
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const isRegisterOrLoginPage =
+    location.pathname === "/login" || location.pathname === "/register";
+
   const handleLogout = async () => {
     try {
       const response = await fetch("http://localhost:8000/logout.php", {
@@ -15,7 +20,7 @@ const Navbar = ({ isLogged, setIsLogged }) => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       } else {
-        setIsLogged(false);
+        setUser(null);
         navigate("/");
       }
     } catch {
@@ -25,20 +30,24 @@ const Navbar = ({ isLogged, setIsLogged }) => {
 
   return (
     <nav className="flex justify-between">
-      <Link to="/">
+      <Link to="/" className="self-start">
         <BsTwitter size={30} color="white" />
       </Link>
-      {isLogged ? (
+      {user ? (
         <>
           <div>
-            <p>Tomek</p>
+            <p>{user.name}</p>
             <button onClick={handleLogout}>Wyloguj</button>
           </div>
         </>
       ) : (
-        <Link to="/login">
-          <BsFillPersonFill size={30} color="white" />
-        </Link>
+        <>
+          {isRegisterOrLoginPage ? null : (
+            <Link to="/login" className="self-end">
+              <BsFillPersonFill size={30} color="white" />
+            </Link>
+          )}
+        </>
       )}
     </nav>
   );

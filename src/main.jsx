@@ -6,10 +6,13 @@ import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Admin from "./pages/Admin";
 import "./index.css";
 
 export default function App() {
-  const [isLogged, setIsLogged] = useState(false);
+  // const [user, setUser] = useState({ id: 1, name: "John", role: "user" });
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -24,7 +27,7 @@ export default function App() {
         if (!data.success) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         } else {
-          setIsLogged(true);
+          setUser({ id: 1, name: "John", role: "admin" });
         }
       } catch {
         console.log("Something went wrong");
@@ -36,13 +39,32 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={<Layout isLogged={isLogged} setIsLogged={setIsLogged} />}
-        >
-          <Route index element={<Home isLogged={isLogged} />} />
-          <Route path="login" element={<Login setIsLogged={setIsLogged}/>} />
-          <Route path="register" element={<Register />} />
+        <Route path="/" element={<Layout user={user} setUser={setUser} />}>
+          <Route index element={<Home user={user} />} />
+          <Route
+            path="login"
+            element={
+              <ProtectedRoute isAllowed={!user}>
+                <Login setUser={setUser} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="register"
+            element={
+              <ProtectedRoute isAllowed={!user}>
+                <Register />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin"
+            element={
+              <ProtectedRoute isAllowed={user && user.role === "admin"}>
+                <Admin />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>

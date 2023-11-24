@@ -3,11 +3,11 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import {useEffect,useState} from 'react'
 
-const Layout = ({setIsLogged,isLogged}) => {
+const Layout = ({setUser,user}) => {
 
   return (
     <>
-      <Navbar isLogged={isLogged} setIsLogged={setIsLogged}/>
+      <Navbar user={user} setUser={setUser}/>
       <Outlet />
       <Footer />
     </>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const Login = ({setIsLogged}) => {
+const Login = ({setUser}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const Login = ({setIsLogged}) => {
       if (!data.success) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       } else {
-        setIsLogged(true);
+        setUser({ id: 1, name: "John", role: "admin" });
         navigate("/");
       }
     } catch {
@@ -45,29 +45,29 @@ const Login = ({setIsLogged}) => {
         <h1 className="text-center text-2xl font-bold mb-8">Log in</h1>
         <form
           method="POST"
-          className="flex flex-col gap-6"
+          className="flex flex-col gap-8"
           onSubmit={handleSubmit}
         >
           <div className="flex flex-col gap-1">
-            <label htmlFor="username">Username</label>
             <input
               type="text"
               name="username"
               id="username"
               onChange={handleUsernameChange}
               value={username}
-              className="border border-white h-9 bg-blue-950 rounded-lg focus:bg-blue-900"
+              className="border border-white h-9 bg-blue-950 rounded-lg focus:bg-blue-900 outline-none pl-3"
+              placeholder="Username"
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="password">Password</label>
             <input
               type="password"
               name="password"
               id="password"
               onChange={handlePasswordChange}
               value={password}
-              className=" h-9 border-white border bg-blue-950 rounded-lg focus:bg-blue-900"
+              className="border border-white h-9 bg-blue-950 rounded-lg focus:bg-blue-900 outline-none pl-3"
+              placeholder="Password"
             />
           </div>
           <button
