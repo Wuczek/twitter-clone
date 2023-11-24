@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Post from "../components/Post";
 import SetPost from "../components/SetPost";
+import PostList from "../components/PostList";
+
 
 const Home = ({ user }) => {
   const [posts, setPosts] = useState([]);
@@ -31,7 +32,7 @@ const Home = ({ user }) => {
       {isLoadingPosts ? (
         <p className="text-center text-xl">Loading posts...</p>
       ) : (
-        posts.map((post) => <Post key={post.id} post={post} />)
+        <PostList posts={posts}/>
       )}
     </main>
   );
