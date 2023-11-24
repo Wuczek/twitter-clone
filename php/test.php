@@ -1,8 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-header("Access-Control-Allow-Credentials: true");
+require 'settings.php';
 
 session_start();
 
@@ -13,4 +10,18 @@ if (isset($_SESSION['user'])) {
 } else {
     echo "Brak sesji";
 }
+
+$conn = new mysqli(DBSERVER, DBLOGIN, DBPASSWORD, DBNAME);
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+    $stmt->bind_param("s", $_SESSION['user']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $row = $result->fetch_assoc();
+
+    echo $row['id'];
 ?>
