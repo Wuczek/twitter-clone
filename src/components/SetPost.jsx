@@ -14,8 +14,10 @@ const SetPost = () => {
         body: `post=${document.getElementById("setPost").textContent}`,
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      const data = await response.json();
+
+      if (data.success) {
+        window.location.reload();
       }
     } catch {
       console.log("Something went wrong");
