@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SetPost from "../components/SetPost";
-import PostList from "../components/PostList";
+import PostList from "../components/PostsList";
 
 
 const Home = ({ user }) => {
