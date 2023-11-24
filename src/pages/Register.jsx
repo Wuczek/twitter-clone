@@ -33,10 +33,15 @@ const Register = () => {
           body: `username=${username}&password=${password}`,
         });
 
+        const data = await response.json();
+    
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         } else {
           navigate("/login");
+        }
+        if (!data.success) {
+          console.log("Istnieje juz taki uzytkownik");
         }
       } catch {
         console.log("Something went wrong");
