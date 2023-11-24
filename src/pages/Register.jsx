@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
 
 const Register = () => {
@@ -26,7 +26,7 @@ const Register = () => {
       try {
         const response = await fetch("http://localhost:8000/register.php", {
           method: "POST",
-          credentials: 'include',
+          credentials: "include",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
@@ -35,6 +35,8 @@ const Register = () => {
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
+        } else {
+          navigate("/login");
         }
       } catch {
         console.log("Something went wrong");

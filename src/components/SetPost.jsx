@@ -5,27 +5,30 @@ const SetPost = () => {
     e.preventDefault();
 
     try {
-        const response = await fetch("http://localhost:8000/post.php", {
-            method: "POST",
-            credentials: "include",
-            headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: `post=${document.getElementById("setPost").value}`,
-        });
-    
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+      const response = await fetch("http://localhost:8000/post.php", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `post=${document.getElementById("setPost").value}`,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
     } catch {
-        console.log("Something went wrong");
+      console.log("Something went wrong");
     }
   };
 
   return (
-    <div>
-      <input type="text" id="setPost" name="setPost" />
-      <button type="submit">Wyslij</button>
+    <div className="shadow-xl border p-2 max-w-md mx-auto flex flex-col gap-4">
+      <h2 className="text-center text-xl">Write your post</h2>
+      <div contentEditable className="outline-none border rounded-md min-h-[3rem]"></div>
+      <button type="submit" className="border w-max mx-auto py-2 px-4">
+        Send it
+      </button>
     </div>
   );
 };

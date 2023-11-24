@@ -11,8 +11,8 @@ import Admin from "./pages/Admin";
 import "./index.css";
 
 export default function App() {
-  // const [user, setUser] = useState({ id: 1, name: "John", role: "user" });
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({ id: 1, name: "John", role: "user" });
+  // const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {

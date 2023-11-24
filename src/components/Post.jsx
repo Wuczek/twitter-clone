@@ -3,7 +3,7 @@ import { BsPerson } from "react-icons/bs";
 
 const Post = () => {
   return (
-    <article className="shadow-xl border p-2 max-w-md mx-auto">
+    <article className="shadow-xl border p-2 max-w-md mx-auto rounded-xl">
       <div className="flex items-center gap-2">
         <BsPerson />
         <p>Nazwa użytkownika</p>
