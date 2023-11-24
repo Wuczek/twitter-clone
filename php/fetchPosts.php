@@ -1,0 +1,21 @@
+<?php
+    require 'settings.php';
+
+    session_start();
+
+    $conn = new mysqli(DBSERVER, DBLOGIN, DBPASSWORD, DBNAME);
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $stmt = $conn->prepare("SELECT posts.content, users.username FROM posts INNER JOIN users ON posts.owner_id=users.ID;");
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $row = $result->fetch_assoc();
+
+    $stmt->close();
+
+    echo json_encode($row);
+
+?>
