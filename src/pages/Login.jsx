@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const Login = ({setUser}) => {
+const Login = ({ setUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [wrongCredentials, setWrongCredentials] = useState(false);
+
   const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
@@ -29,7 +31,7 @@ const Login = ({setUser}) => {
       const data = await response.json();
 
       if (!data.success) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        setWrongCredentials(true);
       } else {
         setUser({ id: 1, name: "John", role: "admin" });
         navigate("/");
@@ -70,6 +72,11 @@ const Login = ({setUser}) => {
               placeholder="Password"
             />
           </div>
+          {wrongCredentials && (
+            <p className="text-red-500 text-center">
+              Wrong username or password
+            </p>
+          )}
           <button
             type="submit"
             className="border w-max mx-auto py-2 px-3 rounded-lg hover:bg-blue-900"

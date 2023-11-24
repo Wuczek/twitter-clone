@@ -7,6 +7,7 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
+  const [thereIsSuchUser, setThereIsSuchUser] = useState(false);
   const [formSuccess, setFormSuccess] = useState({
     username: false,
     password: false,
@@ -35,13 +36,10 @@ const Register = () => {
 
         const data = await response.json();
     
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!data.success) {
+          setThereIsSuchUser(true);
         } else {
           navigate("/login");
-        }
-        if (!data.success) {
-          console.log("Istnieje juz taki uzytkownik");
         }
       } catch {
         console.log("Something went wrong");
@@ -162,6 +160,11 @@ const Register = () => {
               ref={confirmedPasswordErr}
             ></p>
           </div>
+          {thereIsSuchUser && (
+            <p className="text-red-500 text-center text-md">
+              There is already such user
+            </p>
+          )}
           <button
             type="submit"
             className="border w-max mx-auto py-2 px-3 rounded-lg hover:bg-blue-900"
