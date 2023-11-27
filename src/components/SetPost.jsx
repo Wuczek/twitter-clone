@@ -11,7 +11,9 @@ const SetPost = () => {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: `post=${document.getElementById("setPost").textContent}`,
+        body: `post=${
+          document.getElementById("setPost").textContent
+        }&category=${document.getElementById("category").value}`,
       });
 
       const data = await response.json();
@@ -27,8 +29,22 @@ const SetPost = () => {
   return (
     <div className="shadow-xl border p-2 max-w-md mx-auto flex flex-col gap-4">
       <h2 className="text-center text-xl">Write your post</h2>
-      <div contentEditable id="setPost" className="outline-none border rounded-md min-h-[3rem]"></div>
-      <button type="submit" onClick={handleSubmit} className="border w-max mx-auto py-2 px-4">
+      <div
+        contentEditable
+        id="setPost"
+        className="outline-none border rounded-md min-h-[3rem]"
+      ></div>
+      <select name="category" id="category" className="bg-blue-950">
+        <option value="general">General</option>
+        <option value="news">News</option>
+        <option value="funny">Funny</option>
+        <option value="programming">Programming</option>
+      </select>
+      <button
+        type="submit"
+        onClick={handleSubmit}
+        className="border w-max mx-auto py-2 px-4"
+      >
         Send it
       </button>
     </div>
