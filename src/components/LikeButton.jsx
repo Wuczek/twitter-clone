@@ -1,6 +1,6 @@
 const LikeButton = () => {
   return (
-    <div>LikeButton</div>
+    <div>Like</div>
   )
 }
 
