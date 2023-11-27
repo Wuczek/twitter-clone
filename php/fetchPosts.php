@@ -8,9 +8,10 @@
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    $stmt = $conn->prepare("SELECT posts.id, posts.content, users.username, COUNT(likes.id) AS like_count 
+    $stmt = $conn->prepare("SELECT posts.id, posts.content, users.username, categories.category, COUNT(likes.id) AS like_count 
                             FROM posts 
                             INNER JOIN users ON posts.user_id = users.id 
+                            INNER JOIN categories ON posts.category_id = categories.id
                             LEFT JOIN likes ON posts.id = likes.post_id 
                             GROUP BY posts.id, posts.content, users.username;");
 

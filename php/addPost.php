@@ -16,10 +16,18 @@
     $row = $result->fetch_assoc();
     $id = (int)$row['id'];
 
+    $stmt = $conn->prepare("SELECT id FROM categories WHERE category = ?");
+    $stmt->bind_param("s", $_POST['category']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $row = $result->fetch_assoc();
+    $category_id = (int)$row['id'];
+
     $post = $_POST['post'];
 
-    $stmt = $conn->prepare("INSERT INTO posts (content, user_id) VALUES (?, ?)");
-    $stmt->bind_param("si", $post, $id);
+    $stmt = $conn->prepare("INSERT INTO posts (content, user_id, category_id) VALUES (?, ?, ?)");
+    $stmt->bind_param("sii", $post, $id, $category_id);
     $stmt->execute();
     $stmt->close();
 
