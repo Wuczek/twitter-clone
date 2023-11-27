@@ -3,8 +3,7 @@ require 'settings.php';
 
 session_start();
 
-phpinfo();
-/*
+
 // Sprawdź, czy sesja istnieje
 if (isset($_SESSION['user'])) {
     echo "HURA!";
@@ -35,5 +34,4 @@ if (isset($_SESSION['user'])) {
     $stmt->close();
     print_r($posts);
     echo json_encode($posts);
-*/
 ?>

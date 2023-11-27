@@ -1,7 +1,7 @@
 const LikeButton = ({ post_id }) => {
   const handleLike = async () => {
     try {
-      const response = await fetch("http://localhost:8000/login.php", {
+      const response = await fetch("http://localhost:8000/like.php", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -22,7 +22,7 @@ const LikeButton = ({ post_id }) => {
     }
   };
 
-  return <button className="bg-red-400">Like</button>;
+  return <button onClick={handleLike} className="bg-red-400">Like</button>;
 };
 
 export default LikeButton;
