@@ -20,6 +20,7 @@ const Home = ({ user }) => {
 
         const data = await response.json();
         setPosts(data);
+        console.log(data)
         setIsLoadingPosts(false);
       } catch {
         console.log("Something went wrong");
