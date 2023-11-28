@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import SetPost from "../components/SetPost";
 import PostList from "../components/PostsList";
 
-
 const Home = ({ user }) => {
   const [posts, setPosts] = useState([]);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
+
+  const handleSort = () => {
+    
+  }
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -27,12 +30,47 @@ const Home = ({ user }) => {
   }, []);
 
   return (
-    <main className="mt-8 space-y-8 mb-4">
+    <main className="mt-8 space-y-5 mb-4">
       {user ? <SetPost /> : null}
       {isLoadingPosts ? (
         <p className="text-center text-xl">Loading posts...</p>
       ) : (
-        <PostList posts={posts}/>
+        <>
+          <div className="border max-w-md mx-auto p-4 space-y-8 rounded-md">
+            <div className="flex justify-between max-w-md mx-auto items-center">
+              <div>
+                <p>Sort by</p>
+                <select
+                  name="sortPosts"
+                  id="sortPosts"
+                  className="bg-blue-950 border rounded-md w-max"
+                >
+                  <option value="newest">Newest</option>
+                  <option value="oldest">Oldest</option>
+                  <option value="mostLiked">Most liked</option>
+                  <option value="leastLiked">Least liked</option>
+                </select>
+              </div>
+              <p className="font-bold text-xl tracking-wide">POSTS</p>
+              <div className="flex flex-col gap-1">
+                <p>Filter by</p>
+                <select
+                  name="filterPosts"
+                  id="filterPosts"
+                  className="bg-blue-950 border rounded-md w-max"
+                >
+                  <option value="all">All</option>
+                  <option value="general">General</option>
+                  <option value="news">News</option>
+                  <option value="funny">Funny</option>
+                  <option value="programming">Programming</option>
+                </select>
+              </div>
+            </div>
+
+            <PostList posts={posts} />
+          </div>
+        </>
       )}
     </main>
   );

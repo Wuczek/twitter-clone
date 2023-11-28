@@ -1,4 +1,8 @@
+import { BsHeart } from "react-icons/bs";
+import { useEffect, useState } from "react";
+
 const LikeButton = ({ post_id }) => {
+
   const handleLike = async () => {
     try {
       const response = await fetch("http://localhost:8000/like.php", {
@@ -16,13 +20,16 @@ const LikeButton = ({ post_id }) => {
       } else {
         console.log("fail");
       }
-      
     } catch (error) {
       console.log("error");
     }
   };
 
-  return <button onClick={handleLike} className="bg-red-400">Like</button>;
+  return (
+    <button onClick={handleLike} className="hover:text-red-500 hover:scale-125">
+      <BsHeart />
+    </button>
+  );
 };
 
 export default LikeButton;
