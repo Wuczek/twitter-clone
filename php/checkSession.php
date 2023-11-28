@@ -17,7 +17,7 @@
     $row = $result->fetch_assoc();
 
     if(isset($_SESSION['user'])) {
-        echo json_encode(['success' => true, 'user' => $_SESSION['user'], 'role' => $row['role']]);
+        echo json_encode(['success' => true, 'username' => $_SESSION['user'], 'role' => $row['role']]);
     } else {
         echo json_encode(['success' => false]);
     }

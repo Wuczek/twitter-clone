@@ -33,7 +33,7 @@ const Login = ({ setUser }) => {
       if (!data.success) {
         setWrongCredentials(true);
       } else {
-        setUser({ id: 1, name: "John", role: "admin" });
+        setUser({ username: data.username, role: data.role });
         navigate("/");
       }
     } catch {

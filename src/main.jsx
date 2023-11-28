@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { StrictMode, useEffect, useState } from "react";
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
@@ -11,8 +11,8 @@ import Admin from "./pages/Admin";
 import "./index.css";
 
 export default function App() {
-  // const [user, setUser] = useState({ id: 1, name: "John", role: "user" });
   const [user, setUser] = useState(null);
+  const [isUserLoaded, setIsUserLoaded] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -24,17 +24,21 @@ export default function App() {
 
         const data = await response.json();
 
-        if (!data.success) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        } else {
-          setUser({ id: 1, name: "John", role: "admin" });
+        if (data.success) {
+          setUser({ username: data.username, role: data.role });
         }
       } catch {
         console.log("Something went wrong");
+      } finally {
+        setIsUserLoaded(true);
       }
     };
     fetchUser();
   }, []);
+
+  if (!isUserLoaded) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <BrowserRouter>
@@ -60,7 +64,11 @@ export default function App() {
           <Route
             path="admin"
             element={
-              <ProtectedRoute isAllowed={user && user.role === "admin"}>
+              <ProtectedRoute
+                isAllowed={
+                  user && user.username === "Admin" && user.role === "admin"
+                }
+              >
                 <Admin />
               </ProtectedRoute>
             }
@@ -73,4 +81,8 @@ export default function App() {
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+root.render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);
