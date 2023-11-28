@@ -25,7 +25,7 @@
 
     if ($username === $row["username"] && password_verify($password, $row['password'])) {
         $_SESSION['user'] = "$username";
-        echo json_encode(['success' => true]);
+        echo json_encode(['success' => true, 'username' => $row['username'], 'role' => $row['role']]);
     } else {
         echo json_encode(['success' => false]);
     }
