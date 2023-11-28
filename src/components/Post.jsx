@@ -5,12 +5,12 @@ import LikeButton from "./LikeButton";
 const Post = ({ post }) => {
   return (
     <article className="shadow-xl border p-2 max-w-md mx-auto rounded-xl">
-      <div className="flex items-center gap-2">
-        <BsPerson />
-        <p>{post.username}</p>
+      <div className="flex items-center gap-1">
+        <BsPerson size={20} />
+        <p className="font-bold tracking-wider">{post.username}</p>
       </div>
       <p>{post.content}</p>
-      <div className="flex gap-2">
+      <div className="flex gap-2 justify-end">
         <LikeButton post_id={post.id} />
         <p>{post.like_count}</p>
       </div>

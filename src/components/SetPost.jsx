@@ -12,7 +12,7 @@ const SetPost = () => {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: `post=${
-          document.getElementById("setPost").textContent
+          document.getElementById("setPost").value
         }&category=${document.getElementById("category").value}`,
       });
 
@@ -27,23 +27,38 @@ const SetPost = () => {
   };
 
   return (
-    <div className="shadow-xl border p-2 max-w-md mx-auto flex flex-col gap-4">
-      <h2 className="text-center text-xl">Write your post</h2>
-      <div
-        contentEditable
+    <div className="shadow-xl border p-5 max-w-md mx-auto flex flex-col gap-4 rounded-md">
+      <h2 className="text-2xl font-bold">Create a post</h2>
+      <input
+        type="text"
+        className="bg-blue-950 border rounded-md p-2 font-bold"
+        placeholder="Put your post title here..."
+        id="setTitle"
+      />
+      <textarea
+        name="setPost"
         id="setPost"
-        className="outline-none border rounded-md min-h-[3rem]"
-      ></div>
-      <select name="category" id="category" className="bg-blue-950">
-        <option value="general">General</option>
-        <option value="news">News</option>
-        <option value="funny">Funny</option>
-        <option value="programming">Programming</option>
-      </select>
+        rows={5}
+        className="bg-blue-950 border resize-none p-2 rounded-md"
+        placeholder="Write your text here..."
+      ></textarea>
+      <div className="flex flex-col gap-1">
+        <p>Select category:</p>
+        <select
+          name="category"
+          id="category"
+          className="bg-blue-950 w-max border rounded-md"
+        >
+          <option value="general">General</option>
+          <option value="news">News</option>
+          <option value="funny">Funny</option>
+          <option value="programming">Programming</option>
+        </select>
+      </div>
       <button
         type="submit"
         onClick={handleSubmit}
-        className="border w-max mx-auto py-2 px-4"
+        className="border w-max mx-auto py-2 px-4 rounded-full mb-4"
       >
         Send it
       </button>
