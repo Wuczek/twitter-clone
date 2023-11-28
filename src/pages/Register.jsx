@@ -47,9 +47,9 @@ const Register = () => {
     }
   };
 
-  const handleUsernameChange = async (e) => {
+  const handleUsernameChange = (e) => {
     const usernameValidator = (username) => {
-      const regex = /^[a-zA-Z0-9]+$/;
+      const regex = /^[a-zA-Z0-9]{3,}$/;
       return regex.test(username);
     };
     const newUsername = e.target.value;
