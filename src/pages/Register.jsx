@@ -35,7 +35,7 @@ const Register = () => {
         });
 
         const data = await response.json();
-    
+
         if (!data.success) {
           setThereIsSuchUser(true);
         } else {

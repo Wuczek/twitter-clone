@@ -20,4 +20,3 @@ echo json_encode(["exists" => $exists]);
 // Close the database connection
 $stmt->close();
 $conn->close();
-?>

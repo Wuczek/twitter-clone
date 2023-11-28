@@ -2,7 +2,6 @@ import { BsHeart } from "react-icons/bs";
 import { useEffect, useState } from "react";
 
 const LikeButton = ({ post_id }) => {
-
   const handleLike = async () => {
     try {
       const response = await fetch("http://localhost:8000/like.php", {

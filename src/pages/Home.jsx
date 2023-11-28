@@ -3,12 +3,11 @@ import SetPost from "../components/SetPost";
 import PostList from "../components/PostsList";
 
 const Home = ({ user }) => {
-  const [posts, setPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-
-  const handleSort = () => {
-    
-  }
+  const [sortOption, setSortOption] = useState("newest");
+  const [filterOption, setFilterOption] = useState("all");
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -19,16 +18,46 @@ const Home = ({ user }) => {
         });
 
         const data = await response.json();
-        setPosts(data);
-        console.log(data)
-        setIsLoadingPosts(false);
+        setAllPosts(data);
         console.log(data);
+        setIsLoadingPosts(false);
       } catch {
         console.log("Something went wrong");
       }
     };
     fetchPosts();
   }, []);
+
+  useEffect(() => {
+    const sortedAndFilteredPosts = [...allPosts]
+      .sort((a, b) => {
+        switch (sortOption) {
+          case "newest":
+            return new Date(b.created_at) - new Date(a.created_at);
+          case "oldest":
+            return new Date(a.created_at) - new Date(b.created_at);
+          case "mostLiked":
+            return b.like_count - a.like_count;
+          case "leastLiked":
+            return a.like_count - b.like_count;
+          default:
+            return 0;
+        }
+      })
+      .filter((post) => {
+        return filterOption === "all" || post.category === filterOption;
+      });
+
+    setFilteredPosts(sortedAndFilteredPosts);
+  }, [sortOption, filterOption, allPosts]);
+
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+  };
+
+  const handleFilterChange = (e) => {
+    setFilterOption(e.target.value);
+  };
 
   return (
     <main className="mt-8 space-y-5 mb-4">
@@ -45,6 +74,8 @@ const Home = ({ user }) => {
                   name="sortPosts"
                   id="sortPosts"
                   className="bg-blue-950 border rounded-md w-max"
+                  value={sortOption}
+                  onChange={handleSortChange}
                 >
                   <option value="newest">Newest</option>
                   <option value="oldest">Oldest</option>
@@ -59,6 +90,8 @@ const Home = ({ user }) => {
                   name="filterPosts"
                   id="filterPosts"
                   className="bg-blue-950 border rounded-md w-max"
+                  value={filterOption}
+                  onChange={handleFilterChange}
                 >
                   <option value="all">All</option>
                   <option value="general">General</option>
@@ -69,7 +102,7 @@ const Home = ({ user }) => {
               </div>
             </div>
 
-            <PostList posts={posts} />
+            <PostList posts={filteredPosts} />
           </div>
         </>
       )}

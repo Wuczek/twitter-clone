@@ -11,9 +11,9 @@ const SetPost = () => {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: `post=${
-          document.getElementById("setPost").value
-        }&category=${document.getElementById("category").value}`,
+        body: `post=${document.getElementById("setPost").value}&category=${
+          document.getElementById("category").value
+        }`,
       });
 
       const data = await response.json();

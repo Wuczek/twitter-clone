@@ -1,3 +1,2 @@
 <?php
-    print("DB");
-?>
+print("DB");
