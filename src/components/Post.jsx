@@ -2,15 +2,33 @@ import React, { useState } from "react";
 import { BsPerson } from "react-icons/bs";
 import LikeButton from "./LikeButton";
 
-const Post = ({ post }) => {
+const Post = ({ post, isAdminPage }) => {
   const [isLiked, setIsLiked] = useState(false);
-  // first letter of post.category to uppercase
+
+  const handleDeletePost = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/deletePost.php", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `post_id=${post.id}`,
+      });
+
+    } catch {
+      console.log("Something went wrong");
+    }
+  };
 
   return (
     <article className="shadow-xl border p-2 max-w-md mx-auto rounded-xl">
-      <div className="flex items-center gap-1">
-        <BsPerson size={20} />
-        <p className="font-bold tracking-wider">{post.username}</p>
+      <div className="flex justify-between">
+        <div className="flex items-center gap-1">
+          <BsPerson size={20} />
+          <p className="font-bold tracking-wider">{post.username}</p>
+        </div>
+        {isAdminPage ? <button onClick={handleDeletePost}>X</button> : null}
       </div>
       <div>
         <p className="text-xl font-bold">{post.title}</p>

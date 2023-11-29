@@ -68,12 +68,12 @@ const Home = ({ user }) => {
         <>
           <div className="border max-w-md mx-auto p-4 space-y-8 rounded-md">
             <div className="flex justify-between max-w-md mx-auto items-center">
-              <div>
-                <p>Sort by</p>
+              <div className="flex flex-col gap-2">
+                <p className="text-center">Sort by</p>
                 <select
                   name="sortPosts"
                   id="sortPosts"
-                  className="bg-blue-950 border rounded-md w-max"
+                  className="bg-blue-950 border rounded-md w-16"
                   value={sortOption}
                   onChange={handleSortChange}
                 >
@@ -84,12 +84,12 @@ const Home = ({ user }) => {
                 </select>
               </div>
               <p className="font-bold text-xl tracking-wide">POSTS</p>
-              <div className="flex flex-col gap-1">
-                <p>Filter by</p>
+              <div className="flex flex-col gap-2">
+                <p className="text-center">Filter by</p>
                 <select
                   name="filterPosts"
                   id="filterPosts"
-                  className="bg-blue-950 border rounded-md w-max"
+                  className="bg-blue-950 border rounded-md w-16"
                   value={filterOption}
                   onChange={handleFilterChange}
                 >

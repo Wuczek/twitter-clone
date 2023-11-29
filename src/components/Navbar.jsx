@@ -35,7 +35,7 @@ const Navbar = ({ user, setUser }) => {
       </Link>
       {user ? (
         <>
-          <div className="flex gap-4 items-center">
+          <div className="flex flex-col items-center">
             <div className="flex items-center gap-2">
               <BsFillPersonFill size={20} color="white" />
               <p>{user.username}</p>
