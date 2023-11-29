@@ -8,7 +8,7 @@ $conn = new mysqli(DBSERVER, DBLOGIN, DBPASSWORD, DBNAME);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-$stmt = $conn->prepare("SELECT posts.id, posts.content, users.username, categories.category, posts.created_at, COUNT(likes.id) AS like_count 
+$stmt = $conn->prepare("SELECT posts.id, posts.content, users.username, categories.category, posts.created_at, posts.title, COUNT(likes.id) AS like_count 
                             FROM posts 
                             INNER JOIN users ON posts.user_id = users.id 
                             INNER JOIN categories ON posts.category_id = categories.id

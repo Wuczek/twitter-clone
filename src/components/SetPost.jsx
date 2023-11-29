@@ -69,7 +69,7 @@ const SetPost = () => {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: `post=${document.getElementById("setPost").value}&category=${
+          body: `title=${title}&post=${post}&category=${
             document.getElementById("category").value
           }`,
         });
@@ -79,8 +79,8 @@ const SetPost = () => {
         if (data.success) {
           window.location.reload();
         }
-      } catch {
-        console.log("Something went wrong");
+      } catch (error) {
+        console.log("Something went wrong", error);
       }
     }
   };

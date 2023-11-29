@@ -25,9 +25,10 @@ $row = $result->fetch_assoc();
 $category_id = (int)$row['id'];
 
 $post = $_POST['post'];
+$title = $_POST['title'];
 
-$stmt = $conn->prepare("INSERT INTO posts (content, user_id, category_id) VALUES (?, ?, ?)");
-$stmt->bind_param("sii", $post, $id, $category_id);
+$stmt = $conn->prepare("INSERT INTO posts (content, user_id, category_id, title) VALUES (?, ?, ?, ?)");
+$stmt->bind_param("siis", $post, $id, $category_id, $title);
 $stmt->execute();
 $stmt->close();
 
