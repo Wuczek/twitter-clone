@@ -40,9 +40,8 @@ const Post = ({ post, isAdminPage }) => {
             {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
           </p>
         </div>
-        <div className="flex gap-1 items-center">
-          <LikeButton post_id={post.id} />
-          <p>{post.like_count}</p>
+        <div>
+          <LikeButton post_id={post.id} post_like_count={post.like_count}/>
         </div>
       </div>
     </article>

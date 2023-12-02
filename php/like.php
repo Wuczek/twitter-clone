@@ -35,14 +35,14 @@ if (isset($_POST['post_id']) && isset($_SESSION['user'])) {
         $stmt_add_like->execute();
         $stmt_add_like->close();
 
-        echo json_encode(array('success' => true, 'message' => 'Post liked successfully.'));
+        echo json_encode(array('success' => true, 'message' => 'like'));
     } else {
         $stmt_remove_like = $conn->prepare("DELETE FROM likes WHERE user_id = ? AND post_id = ?");
         $stmt_remove_like->bind_param("ii", $user_id, $post_id);
         $stmt_remove_like->execute();
         $stmt_remove_like->close();
 
-        echo json_encode(array('success' => true, 'message' => 'Post unliked successfully.'));
+        echo json_encode(array('success' => true, 'message' => 'unlike'));
     }
 
     $stmt_check_like->close();
