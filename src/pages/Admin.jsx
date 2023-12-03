@@ -9,7 +9,7 @@ const Admin = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch("http://localhost:8000/fetchPosts.php", {
+        const response = await fetch("http://site26981.web1.titanaxe.com/php/fetchPosts.php", {
           method: "GET",
           credentials: "include",
         });

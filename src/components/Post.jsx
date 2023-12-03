@@ -7,7 +7,7 @@ const Post = ({ post, isAdminPage }) => {
 
   const handleDeletePost = async () => {
     try {
-      const response = await fetch("http://localhost:8000/deletePost.php", {
+      const response = await fetch("http://site26981.web1.titanaxe.com/php/deletePost.php", {
         method: "POST",
         credentials: "include",
         headers: {

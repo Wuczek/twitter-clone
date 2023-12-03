@@ -3,6 +3,7 @@ require 'settings.php';
 
 session_start();
 
+$_SESSION['user'] = "Admin";
 
 // Sprawdź, czy sesja istnieje
 if (isset($_SESSION['user'])) {

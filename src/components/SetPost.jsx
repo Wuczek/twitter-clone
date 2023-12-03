@@ -63,7 +63,7 @@ const SetPost = () => {
     e.preventDefault();
     if (formSuccess.post && formSuccess.title) {
       try {
-        const response = await fetch("http://localhost:8000/addPost.php", {
+        const response = await fetch("http://site26981.web1.titanaxe.com/php/addPost.php", {
           method: "POST",
           credentials: "include",
           headers: {
