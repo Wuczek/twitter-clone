@@ -7,7 +7,7 @@ const LikeButton = ({ post_id, post_like_count }) => {
 
   const handleLike = async () => {
     try {
-      const response = await fetch("http://site26981.web1.titanaxe.com/php/like.php", {
+      const response = await fetch("http://localhost:8000/like.php", {
         method: "POST",
         credentials: "include",
         headers: {

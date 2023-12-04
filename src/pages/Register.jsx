@@ -25,7 +25,7 @@ const Register = () => {
       formSuccess.confirmedPassword
     ) {
       try {
-        const response = await fetch("http://site26981.web1.titanaxe.com/php/register.php", {
+        const response = await fetch("http://localhost:8000/register.php", {
           method: "POST",
           credentials: "include",
           headers: {
