@@ -1,28 +1,19 @@
-# React + Vite
+# Application for creating posts with categories
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+addPost.php to skrypt PHP dodający nowy post do bazy danych. Wczytuje ustawienia, rozpoczyna sesję, łączy się z bazą danych, pobiera ID użytkownika i ID kategorii na podstawie danych z formularza POST, a następnie dodaje nowy post. Odpowiada JSON-em, informując o sukcesie operacji.
 
-Currently, two official plugins are available:
+checkSession.php to skrypt PHP, który sprawdza status sesji użytkownika. Po wczytaniu ustawień i rozpoczęciu sesji, łączy się z bazą danych. Następnie sprawdza obecność użytkownika o nazwie zapisanej w sesji. W zależności od wyniku zapytania, zwraca JSON z informacjami o sukcesie, nazwie użytkownika i roli (jeśli użytkownik istnieje), lub informacją o niepowodzeniu sesji. Skrypt przydatny do weryfikacji i uzyskiwania danych o sesji użytkownika.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+deletePost.php to skrypt PHP umożliwiający usuwanie postów z bazy danych. Po wczytaniu ustawień i rozpoczęciu sesji, nawiązuje połączenie z bazą danych. Skrypt sprawdza, czy zalogowany użytkownik to "Admin"; jeśli nie, zwraca JSON z informacją o niepowodzeniu i kończy działanie. Następnie otrzymuje identyfikator posta do usunięcia z formularza POST, usuwa odpowiednie polubienia z tabeli "likes", a następnie usuwa sam post z tabeli "posts". Na koniec zwraca JSON z informacją o sukcesie. Skrypt ten jest przystosowany do uprawnień administratora, umożliwiając tylko administratorowi usuwanie postów.
 
+fetchPosts.php to skrypt PHP do pobierania postów z bazy danych. Po wczytaniu ustawień i rozpoczęciu sesji, łączy się z bazą danych i wykonuje zapytanie SQL, które łączy informacje o postach, autorach, kategoriach i liczbie polubień. Wyniki są przetwarzane i zwracane w formie JSON. Skrypt ten może być używany do dynamicznego ładowania postów na stronie internetowej lub w innych aplikacjach.
 
+like.php to skrypt PHP obsługujący operacje dodawania i usuwania polubień dla postów w bazie danych. Początkowo nawiązuje połączenie z bazą danych, sprawdza aktywną sesję użytkownika, a następnie w zależności od przesłanych danych POST, dodaje lub usuwa polubienie. Ostatecznie zwraca odpowiedni komunikat JSON informujący o wyniku operacji.
 
-WIP: 
+login.php to skrypt PHP odpowiedzialny za proces logowania użytkownika. Po ustawieniu nagłówków do obsługi żądań CORS, skrypt nawiązuje połączenie z bazą danych i sprawdza, czy przesłane dane POST (nazwa użytkownika i hasło) są zgodne z danymi przechowywanymi w bazie. W przypadku powodzenia, tworzy sesję użytkownika i zwraca komunikat JSON z informacjami o sukcesie oraz nazwie użytkownika i jego roli. W przypadku niepowodzenia, zwraca komunikat JSON o błędzie logowania.
 
-- addPost.php - Powyższy plik PHP odpowiada za dodawanie nowego posta do bazy danych na podstawie danych przesłanych w zapytaniu POST. Pobiera identyfikator użytkownika z sesji, identyfikator kategorii z zapytania POST, a następnie dodaje nowy post do tabeli "posts" w bazie danych. Ostatecznie zwraca odpowiedź w formie JSON informującą o sukcesie operacji.
+logout.php to skrypt PHP odpowiedzialny za zakończenie sesji użytkownika i poprawne wylogowanie go z serwisu
 
-- checkSession.php - Powyższy plik PHP sprawdza, czy użytkownik jest zalogowany. Jeśli tak, zwraca informacje o sukcesie w formie JSON, zawierające nazwę użytkownika i rolę. W przeciwnym razie zwraca informację o niepowodzeniu operacji.
+register.php to skrypt PHP odpowiedzialny za proces rejestracji użytkownika. Po nawiązaniu połączenia z bazą danych, sprawdza, czy podana nazwa użytkownika już istnieje. W przypadku konfliktu zwraca komunikat JSON informujący o niepowodzeniu rejestracji. W przeciwnym razie, hasło jest zaszyfrowane, a następnie dodawane razem z nazwą użytkownika do bazy danych. Po operacji rejestracji, zwraca komunikat JSON potwierdzający sukces procesu rejestracji.
 
-- checkUsername.php - Ten kod jest przykładem prostego mechanizmu sprawdzającego, czy użytkownik o podanym pseudonimie istnieje w bazie danych. Zwraca informację w formie JSON, co może być przydatne w przypadku formularzy rejestracyjnych lub innych sytuacji, gdzie konieczne jest unikalne przypisanie pseudonimu do użytkownika.
-
-- deletePost.php - Powyższy krótki kod PHP usuwa post wraz z polubieniami z bazy danych.
-
-- fetchPosts.php - Powyższy kod PHP pobiera informacje o postach z bazy danych, włączając liczbę polubień dla każdego posta. Następnie przekształca te dane na format JSON i zwraca je. W kodzie użyte są zapytania SQL z joinami do uzyskania kompleksowych informacji o postach, użytkownikach i kategoriach. Ostatecznie, dane są przetwarzane do postaci tablicy i przekształcane na format JSON przed wysłaniem do klienta.
-
-- like.php - Powyższy kod PHP obsługuje dodawanie i usuwanie polubień dla postów w zależności od żądania przesłanego przez formularz.
-
-- logout.php - plik służący do wylogowania uzytkownika 
-
-- register.php - ten kod PHP zajmuje się rejestracją nowego użytkownika w bazie danych
+settings.php to plik w którym definiowane jest połączenie z bazą danych
