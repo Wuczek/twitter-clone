@@ -1,4 +1,18 @@
 # Application for creating posts with categories
+This is a full-stack web application built with React.js on the frontend and PHP on the backend. The application allows users to create, read, update, and delete posts.
+
+The project is structured as follows:
+
+src/: This directory contains all the React.js components and pages.
+php/: This directory contains all the PHP scripts for handling server-side logic.
+
+# Built With
+React.js - The web framework used
+PHP - Server-side scripting language
+Vite - Build tool and development server
+
+
+#PL
 
 addPost.php to skrypt PHP dodający nowy post do bazy danych. Wczytuje ustawienia, rozpoczyna sesję, łączy się z bazą danych, pobiera ID użytkownika i ID kategorii na podstawie danych z formularza POST, a następnie dodaje nowy post. Odpowiada JSON-em, informując o sukcesie operacji.
 
